@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Modem Technologies - OTP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#030615;
+  --panel:#080d24;
+  --panel2:#0c1230;
+  --line:rgba(126,103,255,.18);
+  --text:#f7f8ff;
+  --muted:#9299bd;
+  --purple:#7547ff;
+  --blue:#315cff;
+  --cyan:#26bfff;
+  --green:#2ee58b;
+  --danger:#ff5577;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+body{display:flex;justify-content:center}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{
+  width:100%;max-width:430px;min-height:100vh;
+  background:
+    radial-gradient(circle at 90% 0%,rgba(74,69,255,.18),transparent 32%),
+    radial-gradient(circle at 0% 55%,rgba(38,191,255,.06),transparent 30%),
+    var(--bg);
+  position:relative;padding-bottom:88px;
+}
+.header{
+  position:sticky;top:0;z-index:20;
+  padding:16px 18px 14px;
+  background:rgba(3,6,21,.86);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.top{display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{
+  width:38px;height:38px;border-radius:12px;
+  display:grid;place-items:center;
+  font-weight:800;font-size:22px;font-style:italic;
+  background:linear-gradient(135deg,#1c6cff,#8d3dff);
+  box-shadow:0 8px 28px rgba(91,65,255,.35);
+}
+.brand h1{font:800 16px "Plus Jakarta Sans";margin:0}
+.brand span{font-size:10px;color:#8990b4;display:block;margin-top:2px}
+.iconbtn{
+  width:40px;height:40px;border:1px solid var(--line);border-radius:13px;
+  background:rgba(255,255,255,.035);color:#fff;
+}
+main{padding:20px 16px}
+.eyebrow{font-size:12px;color:#8d96c0;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+h2{font:800 25px "Plus Jakarta Sans";margin:7px 0 7px}
+.subtitle{font-size:13px;color:var(--muted);line-height:1.6;margin:0 0 18px}
+.card{
+  background:linear-gradient(145deg,rgba(15,21,55,.96),rgba(7,11,31,.96));
+  border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:14px;
+  box-shadow:0 18px 45px rgba(0,0,0,.16);
+}
+.cardtitle{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.cardtitle strong{font-size:14px}
+.badge{
+  padding:6px 9px;border-radius:9px;font-size:10px;font-weight:700;
+  color:#a9c6ff;background:rgba(49,92,255,.11);border:1px solid rgba(49,92,255,.2)
+}
+label{display:block;font-size:11px;color:#a9afd0;font-weight:700;margin:0 0 7px}
+.field{margin-bottom:14px}
+input,select,textarea{
+  width:100%;border:1px solid rgba(130,120,255,.16);outline:none;
+  background:#060a1e;color:#fff;border-radius:13px;padding:13px 13px;
+  transition:.2s;
+}
+input:focus,select:focus,textarea:focus{border-color:rgba(117,71,255,.7);box-shadow:0 0 0 3px rgba(117,71,255,.09)}
+select{appearance:auto}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.template{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:4px
+}
+.template button{
+  border:1px solid rgba(117,71,255,.2);background:rgba(117,71,255,.07);
+  color:#c9c5ff;padding:8px 10px;border-radius:10px;font-size:10px;font-weight:700
+}
+.preview{
+  border:1px solid rgba(46,229,139,.14);background:rgba(46,229,139,.045);
+  border-radius:15px;padding:13px;margin-top:4px;
+}
+.preview .line{display:flex;justify-content:space-between;gap:12px;font-size:11px;margin:7px 0}
+.preview .line span:first-child{color:#8f96b8}
+.preview .line span:last-child{text-align:right;color:#f5f7ff;font-weight:600}
+.info{
+  display:flex;gap:11px;padding:12px;border-radius:14px;
+  background:rgba(49,92,255,.07);border:1px solid rgba(49,92,255,.13);
+  margin-bottom:14px;
+}
+.infoicon{
+  min-width:30px;height:30px;border-radius:10px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#315cff,#7b43ff);font-size:12px;font-weight:800
+}
+.info p{margin:0;color:#aeb5d3;font-size:11px;line-height:1.55}
+.info b{color:#fff}
+.primary{
+  width:100%;border:0;border-radius:14px;padding:14px;
+  color:#fff;font-weight:800;
+  background:linear-gradient(135deg,#315cff,#7a3fff);
+  box-shadow:0 12px 30px rgba(75,67,255,.25);
+}
+.secondary{
+  width:100%;border:1px solid rgba(117,71,255,.2);border-radius:13px;padding:12px;
+  color:#d8d5ff;background:rgba(117,71,255,.06);font-weight:700;margin-top:9px;
+}
+.status{
+  display:none;margin-top:12px;padding:11px;border-radius:12px;font-size:11px;text-align:center
+}
+.status.ok{display:block;color:#79f1b5;background:rgba(46,229,139,.08);border:1px solid rgba(46,229,139,.18)}
+.codebox{
+  background:#030615;border:1px solid rgba(255,255,255,.07);border-radius:14px;
+  padding:13px;overflow:auto;white-space:pre;font-family:monospace;font-size:10px;
+  line-height:1.65;color:#c7caff;
+}
+.codebox .key{color:#8ca5ff}.codebox .str{color:#72e5b0}
+.copy{
+  border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);
+  color:#dfe3ff;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:700
+}
+.nav{
+  position:fixed;bottom:0;z-index:30;width:100%;max-width:430px;
+  display:grid;grid-template-columns:repeat(5,1fr);
+  padding:9px 8px calc(9px + env(safe-area-inset-bottom));
+  background:rgba(4,7,22,.94);backdrop-filter:blur(18px);
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.nav a{
+  text-decoration:none;color:#737b9f;text-align:center;font-size:9px;font-weight:700;
+  padding:5px 2px;border-radius:10px
+}
+.nav a .ico{display:block;font-size:17px;margin-bottom:4px}
+.nav a.active{color:#9a7cff;background:rgba(117,71,255,.07)}
+.counter{float:right;color:#70799f;font-size:10px;font-weight:500}
+@media(min-width:700px){
+  body{background:#02040e}
+  .app{box-shadow:0 0 80px rgba(40,20,130,.16)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header class="header">
+  <div class="top">
+    <div class="brand">
+      <div class="logo">M</div>
+      <div><h1>Modem Technologies</h1><span>Developer Console</span></div>
+    </div>
+    <button class="iconbtn" onclick="history.back()" aria-label="Back">‹</button>
+  </div>
+</header>
+
+<main>
+  <div class="eyebrow">OTP API</div>
+  <h2>OTP Verification</h2>
+  <p class="subtitle">
+    Configure how your application sends verification codes. In production, the user's phone number
+    comes automatically from your application's signup or login request.
+  </p>
+
+  <div class="info">
+    <div class="infoicon">API</div>
+    <p>
+      <b>No manual phone entry is required.</b><br>
+      Your app sends the user's phone number to Modem through the API. Modem generates the OTP and sends the SMS using your application's sender name.
+    </p>
+  </div>
+
+  <section class="card">
+    <div class="cardtitle">
+      <strong>OTP Configuration</strong>
+      <span class="badge">Developer setup</span>
+    </div>
+
+    <div class="field">
+      <label>APPLICATION</label>
+      <select id="app">
+        <option value="StudentX">StudentX</option>
+        <option value="iChat">iChat</option>
+        <option value="MyApp">MyApp</option>
+      </select>
+    </div>
+
+    <div class="grid2">
+      <div class="field">
+        <label>OTP LENGTH</label>
+        <select id="length">
+          <option value="4">4 digits</option>
+          <option value="6" selected>6 digits</option>
+          <option value="8">8 digits</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>EXPIRY</label>
+        <select id="expiry">
+          <option value="2">2 minutes</option>
+          <option value="5" selected>5 minutes</option>
+          <option value="10">10 minutes</option>
+          <option value="15">15 minutes</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>SENDER NAME</label>
+      <select id="sender">
+        <option>StudentX</option>
+        <option>iChat</option>
+        <option>MyApp</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>MESSAGE TEMPLATE <span class="counter" id="count">0/160</span></label>
+      <textarea id="message" rows="4" maxlength="160">Your {app} verification OTP is {otp}. It expires in {expiry} minutes.</textarea>
+    </div>
+
+    <div class="template">
+      <button onclick="setTemplate('Your {app} signup OTP is {otp}. It expires in {expiry} minutes.')">Signup</button>
+      <button onclick="setTemplate('Your {app} login OTP is {otp}. It expires in {expiry} minutes.')">Login</button>
+      <button onclick="setTemplate('Your {app} password reset OTP is {otp}. It expires in {expiry} minutes.')">Password Reset</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="cardtitle">
+      <strong>Automatic API Flow</strong>
+      <span class="badge">Production</span>
+    </div>
+
+    <div class="codebox" id="code">POST /v1/otp/send
+
+{
+  "application": "StudentX",
+  "phone": user.phone
+}</div>
+
+    <button class="secondary" onclick="copyCode()">Copy API Example</button>
+
+    <div class="preview" style="margin-top:14px">
+      <div class="line"><span>Application</span><span id="pApp">StudentX</span></div>
+      <div class="line"><span>Recipient</span><span>user.phone</span></div>
+      <div class="line"><span>Sender</span><span id="pSender">StudentX</span></div>
+      <div class="line"><span>OTP</span><span>Generated automatically</span></div>
+      <div class="line"><span>Expiry</span><span id="pExpiry">5 minutes</span></div>
+      <div class="line"><span>Delivery</span><span>Automatic SMS</span></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="cardtitle">
+      <strong>Test Configuration</strong>
+      <span class="badge">Frontend demo</span>
+    </div>
+    <p style="font-size:11px;color:#8f96b8;line-height:1.6;margin-top:0">
+      This button only previews the configuration. Real OTP generation, phone-number collection,
+      SMS delivery and verification will be connected to the Modem backend later.
+    </p>
+    <button class="primary" onclick="testConfig()">Test OTP Configuration</button>
+    <div class="status" id="status">Configuration saved for this frontend session.</div>
+  </section>
+
+</main>
+
+<nav class="nav">
+  <a href="dashboard.html"><span class="ico">⌂</span>Dashboard</a>
+  <a href="applications.html"><span class="ico">▦</span>Apps</a>
+  <a href="api.html"><span class="ico">&lt;/&gt;</span>API</a>
+  <a href="sms.html"><span class="ico">▣</span>SMS</a>
+  <a href="otp.html" class="active"><span class="ico">◇</span>OTP</a>
+</nav>
+
+</div>
+
+<script>
+const app = document.getElementById('app');
+const sender = document.getElementById('sender');
+const length = document.getElementById('length');
+const expiry = document.getElementById('expiry');
+const message = document.getElementById('message');
+
+function update(){
+  document.getElementById('pApp').textContent = app.value;
+  document.getElementById('pSender').textContent = sender.value;
+  document.getElementById('pExpiry').textContent = expiry.value + ' minutes';
+  message.value = message.value
+    .replace(/\{app\}/g, app.value)
+    .replace(/\{expiry\}/g, expiry.value);
+  document.getElementById('count').textContent = message.value.length + '/160';
+
+  document.getElementById('code').textContent =
+`POST /v1/otp/send
+
+{
+  "application": "${app.value}",
+  "phone": user.phone
+}`;
+}
+function setTemplate(text){
+  message.value = text
+    .replace(/\{app\}/g, app.value)
+    .replace(/\{expiry\}/g, expiry.value);
+  document.getElementById('count').textContent = message.value.length + '/160';
+}
+function copyCode(){
+  navigator.clipboard.writeText(document.getElementById('code').textContent);
+  const s=document.getElementById('status');
+  s.textContent='API example copied.';
+  s.className='status ok';
+}
+function testConfig(){
+  const s=document.getElementById('status');
+  s.textContent='OTP configuration saved for this frontend session.';
+  s.className='status ok';
+}
+[app,sender,length,expiry,message].forEach(el=>el.addEventListener('input',update));
+[app,sender,length,expiry].forEach(el=>el.addEventListener('change',update));
+update();
+</script>
+</body>
+</html>
