@@ -1,0 +1,23 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Modem Technologies — Auth</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#020511;color:#fff;font-family:Inter;display:flex;justify-content:center;min-height:100vh}.wrap{width:100%;max-width:430px;padding:28px 18px}.logo{width:52px;height:52px;border-radius:16px;background:linear-gradient(135deg,#2864ff,#8b3cff);display:grid;place-items:center;font-size:29px;font-weight:800;font-style:italic}.brand{display:flex;gap:12px;align-items:center;margin:30px 0}.brand h1{font:800 20px 'Plus Jakarta Sans';margin:0}.brand p{margin:3px 0;color:#8f98bb;font-size:11px}.card{background:#08102a;border:1px solid #1b2859;border-radius:24px;padding:20px}h2{margin:0 0 7px;font:800 24px 'Plus Jakarta Sans'}.sub{color:#8993b8;font-size:12px;line-height:1.5;margin-bottom:18px}input{width:100%;padding:14px;border-radius:13px;border:1px solid #1b2859;background:#030817;color:#fff;outline:0;margin:6px 0 11px}label{font-size:10px;color:#aeb6d2;font-weight:700}button{width:100%;padding:14px;border:0;border-radius:13px;color:#fff;font-weight:800;background:linear-gradient(135deg,#315dff,#793dff);margin-top:5px}.social{background:#0c1534;border:1px solid #202d60;margin-top:9px}.msg{font-size:11px;color:#77edb3;text-align:center;margin-top:12px;min-height:16px}.links{display:flex;gap:8px;margin-top:14px}.links button{background:#0b1430;border:1px solid #202d60;font-size:11px}.hide{display:none}
+</style></head><body><div class="wrap"><div class="brand"><div class="logo">M</div><div><h1>Modem Technologies</h1><p>Developer Console</p></div></div>
+<div class="card"><div id="login"><h2>Welcome back</h2><div class="sub">Sign in to manage your applications, API keys, SMS and OTP services.</div>
+<label>Email</label><input id="lemail" type="email" placeholder="you@example.com"><label>Password</label><input id="lpass" type="password" placeholder="••••••••"><button onclick="login()">Login</button>
+<button class="social" onclick="oauth('google')">Continue with Google</button><button class="social" onclick="oauth('github')">Continue with GitHub</button>
+<div class="links"><button onclick="show('signup')">Create account</button><button onclick="resetPassword()">Forgot password</button></div></div>
+<div id="signup" class="hide"><h2>Create account</h2><div class="sub">Create your Modem developer account.</div>
+<label>Full name</label><input id="sname" placeholder="Your name"><label>Email</label><input id="semail" type="email" placeholder="you@example.com"><label>Password</label><input id="spass" type="password" placeholder="Minimum 6 characters"><button onclick="signup()">Create account</button>
+<button class="social" onclick="oauth('google')">Continue with Google</button><button class="social" onclick="oauth('github')">Continue with GitHub</button><div class="links"><button onclick="show('login')">Back to login</button></div></div><div id="msg" class="msg"></div></div></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script>
+<script>
+function show(id){document.getElementById('login').classList.toggle('hide',id!=='login');document.getElementById('signup').classList.toggle('hide',id!=='signup');document.getElementById('msg').textContent=''}
+function msg(t){document.getElementById('msg').textContent=t}
+async function login(){const {error}=await modem.auth.signInWithPassword({email:lemail.value,password:lpass.value});if(error)return msg(error.message);location.href='dashboard.html'}
+async function signup(){const {error}=await modem.auth.signUp({email:semail.value,password:spass.value,options:{data:{full_name:sname.value}}});if(error)return msg(error.message);msg('Account created. Check your email if confirmation is enabled.')}
+async function oauth(provider){const {error}=await modem.auth.signInWithOAuth({provider,options:{redirectTo:location.origin+'/dashboard.html'}});if(error)msg(error.message)}
+async function resetPassword(){if(!lemail.value)return msg('Enter your email first.');const {error}=await modem.auth.resetPasswordForEmail(lemail.value,{redirectTo:location.origin+'/auth.html'});msg(error?error.message:'Password reset email sent.')}
+</script></body></html>
