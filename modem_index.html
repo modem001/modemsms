@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Modem Technologies — SMS & OTP infrastructure for modern African applications.">
+<title>Modem Technologies — SMS & OTP Infrastructure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020817;--panel:#07132c;--line:#1c3970;--text:#f7f9ff;--muted:#9eacd0;--blue:#3269ff;--purple:#8138ff;--green:#00d47e;--max:1180px}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:Inter,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 85% 8%,#1235a044,transparent 28%),radial-gradient(circle at 15% 15%,#7137ff1c,transparent 25%),linear-gradient(#010611,#020817 55%,#01050e);line-height:1.6}
+a{text-decoration:none;color:inherit}.container{width:min(calc(100% - 34px),var(--max));margin:auto}
+.nav{position:sticky;top:0;z-index:20;background:#010611dd;backdrop-filter:blur(16px);border-bottom:1px solid #ffffff10}
+.navin{height:76px;display:flex;align-items:center;justify-content:space-between;gap:25px}
+.brand{display:flex;align-items:center;gap:10px}.logo{font-size:35px;font-weight:900;font-style:italic;line-height:1;background:linear-gradient(135deg,#6634ff,#00baff);color:transparent;background-clip:text}.brand b{display:block;font-size:19px;line-height:1.1}.brand small{color:#c5cee4}.links{display:flex;gap:30px;font-size:13px;color:#cbd4e9}.links a:hover,.links .active{color:#fff}.actions{display:flex;gap:10px}.btn{display:inline-block;padding:11px 18px;border:1px solid #5875c455;border-radius:10px;font-size:13px;font-weight:700;background:#07132ccc;color:#fff}.primary{border:0;background:linear-gradient(135deg,#6630ff,#8d3cff,#416cff);box-shadow:0 12px 28px #6030ff35}.menu{display:none;background:none;border:0;color:#fff;font-size:24px}
+.hero{padding:72px 0 75px}.heroGrid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}.tag{display:inline-flex;gap:8px;align-items:center;padding:7px 12px;border:1px solid #3677ff55;background:#17366b55;border-radius:999px;font-size:10px;font-weight:800}.dot{width:7px;height:7px;border-radius:50%;background:#00d47e;box-shadow:0 0 12px #00d47e}
+h1{font-size:clamp(42px,5vw,66px);line-height:1.04;letter-spacing:-2.8px;margin-top:20px}.grad{background:linear-gradient(90deg,#7134ff,#a13cff,#4772ff);background-clip:text;color:transparent}.lead{max-width:580px;color:var(--muted);font-size:15px;margin:22px 0 27px}.heroBtns{display:flex;gap:12px;flex-wrap:wrap}.checks{display:flex;gap:20px;flex-wrap:wrap;margin-top:23px;color:#c8d2e8;font-size:10px}.checks span{display:flex;gap:6px;align-items:center}.check{width:14px;height:14px;border-radius:4px;background:#3158bc;display:grid;place-items:center;font-size:9px}
+.visual{min-height:470px;position:relative;display:flex;justify-content:center;align-items:center}.phone{width:238px;height:450px;border:7px solid #11182c;border-radius:35px;background:radial-gradient(circle at 50% 35%,#8b32ffbb,transparent 35%),linear-gradient(145deg,#070b21,#15194b 55%,#080b2b);box-shadow:0 35px 80px #0009,0 0 70px #4c2fff33;position:relative;z-index:2;overflow:hidden}.notch{width:88px;height:21px;background:#070a14;border-radius:0 0 14px 14px;margin:auto}.time{text-align:center;font-size:27px;margin-top:34px}.date{text-align:center;color:#aab7d5;font-size:10px}.notice{margin:20px 12px 0;padding:12px;border:1px solid #8b9bff33;background:#091129e8;border-radius:12px}.notice i{float:left;width:29px;height:29px;margin-right:9px;border-radius:9px;background:linear-gradient(135deg,#7137ff,#386fff);display:grid;place-items:center;font-style:normal;font-weight:800}.notice b{font-size:10px;display:block}.notice small{font-size:8px;color:#aeb8d0}
+.dash{width:380px;padding:14px;border:1px solid #5b87ff66;border-radius:15px;background:#071026f5;position:absolute;right:-5px;bottom:5px;z-index:4;box-shadow:0 28px 70px #0008}.dashTop{display:flex;justify-content:space-between;font-size:12px;font-weight:800;margin-bottom:10px}.dashGrid{display:grid;grid-template-columns:95px 1fr;gap:9px}.side,.stat{border:1px solid #ffffff0b;border-radius:9px;background:#ffffff04}.side{padding:8px}.side div{font-size:8px;color:#95a4c4;padding:7px;border-radius:6px}.side div:first-child{background:#5141ff2b;color:#fff}.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stat{padding:11px}.stat small{font-size:8px;color:#8998bb}.stat strong{display:block;font-size:17px}.up{font-size:8px;color:#00d47e}.activity{grid-column:1/-1}.activity p{display:flex;justify-content:space-between;font-size:8px;color:#a9b4ca;padding:5px 0;border-bottom:1px solid #ffffff09}
+.section{padding:80px 0}.title{text-align:center;max-width:720px;margin:0 auto 38px}.kicker{text-transform:uppercase;color:#6578ff;font-size:10px;font-weight:800;letter-spacing:1.5px}.title h2{font-size:38px;line-height:1.1;margin:8px 0 11px;letter-spacing:-1px}.title p{font-size:13px;color:var(--muted)}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{padding:23px;border:1px solid var(--line);border-radius:13px;background:linear-gradient(145deg,#0a193acc,#050d1fca);min-height:145px}.ico{width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#3035bd,#285fff);display:grid;place-items:center;margin-bottom:15px}.card h3{font-size:14px}.card p{font-size:11px;color:#99a8c8;margin-top:5px}
+.stepsWrap{background:linear-gradient(90deg,#17246ab3,#0d1648bf);border-block:1px solid #5975ff22}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:35px}.step{position:relative}.step:not(:last-child):after{content:"→";position:absolute;right:-27px;top:6px;color:#6575ff;font-size:24px}.num{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,#7b35ff,#4169ff);font-weight:800;font-size:12px;margin-right:9px}.step h3{display:inline;font-size:14px}.step p{color:#9ba9c9;font-size:11px;margin-top:10px}
+.why{display:grid;grid-template-columns:1fr 1.3fr;gap:65px;align-items:center}.why p{color:var(--muted);font-size:13px;margin:15px 0 20px}.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:25px}.metric{display:flex;gap:11px}.metric .ico{width:36px;height:36px;flex:none;margin:0}.metric strong{display:block;font-size:15px}.metric span{font-size:10px;color:#9ca9c7}
+.partners{border-block:1px solid #ffffff0c;padding:42px 0}.partnerRow{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;color:#9eaccb}.partner{font-size:14px;font-weight:700}
+footer{padding:52px 0 24px}.footGrid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr 1.5fr;gap:30px}.footGrid h4{font-size:11px;margin-bottom:12px}.footGrid a,.footGrid p{font-size:10px;color:#8f9dbb;margin:7px 0;display:block}.newsletter{display:flex;margin-top:9px}.newsletter input{flex:1;min-width:0;padding:10px;border:1px solid #5a7bff40;border-radius:8px 0 0 8px;background:#07132e;color:#fff}.newsletter button{width:42px;border:0;border-radius:0 8px 8px 0;background:#7838ff;color:#fff}.social{display:flex;gap:8px;margin-top:12px}.social a{width:27px;height:27px;border:1px solid #5a7bff40;border-radius:7px;display:grid;place-items:center}.copy{border-top:1px solid #ffffff0b;margin-top:35px;padding-top:18px;display:flex;justify-content:space-between;color:#697895;font-size:9px}
+@media(max-width:900px){.links{display:none}.menu{display:block}.heroGrid,.why{grid-template-columns:1fr}.visual{min-height:520px}.dash{right:50%;transform:translateX(50%)}.phone{position:absolute;top:5px;left:50%;transform:translateX(-50%)}.features{grid-template-columns:repeat(2,1fr)}.footGrid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.navin{height:65px}.actions .btn:first-child{display:none}h1{font-size:43px}.hero{padding-top:50px}.visual{transform:scale(.84);margin:0 -9%}.features,.steps,.metrics{grid-template-columns:1fr}.step:not(:last-child):after{display:none}.footGrid{grid-template-columns:1fr 1fr}.footBrand{grid-column:1/-1}.copy{flex-direction:column}}
+</style>
+</head>
+<body>
+<header class="nav"><div class="container navin">
+<a class="brand" href="index.html"><span class="logo">M</span><span><b>Modem</b><small>Technologies</small></span></a>
+<nav class="links"><a class="active" href="#home">Home</a><a href="#products">Products</a><a href="documentation.html">Documentation</a><a href="#pricing">Pricing</a><a href="#about">About</a></nav>
+<div class="actions"><a class="btn" href="login.html">Login</a><a class="btn primary" href="signup.html">Get Started</a><button class="menu" onclick="toggleMenu()">☰</button></div>
+</div></header>
+
+<main id="home">
+<section class="hero"><div class="container heroGrid"><div>
+<span class="tag"><i class="dot"></i>NIGERIA'S TRUSTED SMS &amp; OTP GATEWAY</span>
+<h1>Send SMS &amp; OTP<br>with Your Brand,<br><span class="grad">Not Ours.</span></h1>
+<p class="lead">Modem Technologies provides a powerful, reliable and developer-friendly SMS/OTP gateway. Let your apps, platforms and businesses send messages with their own brand name — easily and at scale.</p>
+<div class="heroBtns"><a class="btn primary" href="signup.html">Get Started Free →</a><a class="btn" href="documentation.html">View Documentation</a></div>
+<div class="checks"><span><b class="check">✓</b>99.9% Delivery Rate</span><span><b class="check">✓</b>Real-time Logs</span><span><b class="check">✓</b>Developer Friendly</span></div>
+</div>
+<div class="visual"><div class="phone"><div class="notch"></div><div class="time">9:41</div><div class="date">Monday, 26 May</div>
+<div class="notice"><i>S</i><b>StudentX</b><small>Your StudentX login OTP is 2528</small></div>
+<div class="notice"><i>i</i><b>iChat</b><small>Your iChat signup OTP is 258299</small></div>
+<div class="notice"><i>M</i><b>MyApp</b><small>Your MyApp verification code is 578164</small></div></div>
+<div class="dash"><div class="dashTop"><span><span style="color:#963dff">M</span> Modem API</span><span>&lt;/&gt;</span></div><div class="dashGrid"><div class="side"><div>Dashboard</div><div>SMS</div><div>OTP</div><div>Logs</div><div>Projects</div><div>Billing</div><div>Settings</div></div><div class="stats"><div class="stat"><small>Total SMS Sent</small><strong>248,632</strong><span class="up">↑ 12%</span></div><div class="stat"><small>Success Rate</small><strong>99.9%</strong><span class="up">↑ 0.2%</span></div><div class="stat activity"><small>Recent Activity</small><p>StudentX <span>OTP sent successfully</span></p><p>iChat <span>SMS sent successfully</span></p><p>MyApp <span>SMS sent successfully</span></p></div></div></div></div></div></div></section>
+
+<section id="products" class="section"><div class="container"><div class="title"><div class="kicker">Powerful Features</div><h2>Everything You Need in One Platform</h2><p>Modem Technologies gives you the tools to build, scale and manage your SMS &amp; OTP services with ease.</p></div>
+<div class="features">
+<article class="card"><div class="ico">ϟ</div><h3>SMS API</h3><p>Send transactional SMS, notifications, and alerts with your own sender name.</p></article>
+<article class="card"><div class="ico">◈</div><h3>OTP API</h3><p>Generate and verify OTPs for secure login, registration and more.</p></article>
+<article class="card"><div class="ico">&lt;/&gt;</div><h3>Developer Dashboard</h3><p>Manage your apps, API keys, usage, and billing — all in one place.</p></article>
+<article class="card"><div class="ico">▥</div><h3>Real-time Delivery Logs</h3><p>Track every message, its status and delivery time in real-time.</p></article>
+<article class="card"><div class="ico">☷</div><h3>Custom Templates</h3><p>Create and manage custom SMS and OTP templates for your applications.</p></article>
+<article class="card"><div class="ico">♟</div><h3>Multi-App Support</h3><p>Use one account to manage multiple projects and brands.</p></article>
+</div></div></section>
+
+<section class="stepsWrap section"><div class="container"><div class="title"><div class="kicker">How It Works</div><h2>Get Started in 3 Simple Steps</h2><p>Integrate with Modem in minutes and start sending SMS &amp; OTP with your brand name.</p></div>
+<div class="steps"><div class="step"><span class="num">1</span><h3>Create Account</h3><p>Sign up and verify your email to get started.</p></div><div class="step"><span class="num">2</span><h3>Get API Key</h3><p>Create a project, generate your API key and configure your settings.</p></div><div class="step"><span class="num">3</span><h3>Start Sending</h3><p>Make API requests and send SMS/OTP with your brand name.</p></div></div></div></section>
+
+<section id="about" class="section"><div class="container why"><div><div class="kicker">Why Choose Modem?</div><h2>Built for Developers.<br>Trusted by Businesses.</h2><p>From startups to large enterprises, Modem Technologies is the trusted SMS/OTP platform for innovative teams across Nigeria and beyond.</p><a class="btn primary" href="signup.html">Start Building Today →</a></div>
+<div class="metrics"><div class="metric"><div class="ico">◈</div><div><strong>99.9%</strong><span>Delivery Success Rate</span></div></div><div class="metric"><div class="ico">ϟ</div><div><strong>&lt; 5s</strong><span>Average Delivery Time</span></div></div><div class="metric"><div class="ico">◌</div><div><strong>24/7</strong><span>Developer Support</span></div></div><div class="metric"><div class="ico">⌁</div><div><strong>Multiple</strong><span>Telecom Providers</span></div></div><div class="metric"><div class="ico">▱</div><div><strong>Scalable</strong><span>For Any Business Size</span></div></div><div class="metric"><div class="ico">▣</div><div><strong>Secure</strong><span>&amp; Compliant</span></div></div></div></div></section>
+
+<section class="partners"><div class="container"><div class="title" style="margin-bottom:28px"><div class="kicker">Trusted by Innovators</div><h2 style="font-size:25px">Powering the Next Generation of African Apps</h2></div><div class="partnerRow"><span class="partner">StudentX</span><span class="partner">● iChat</span><span class="partner">◆ MyApp</span><span class="partner">▥ FinTech</span><span class="partner">◆ EduTech</span><span class="partner">⊕ HealthApp</span><span class="partner">... and many more</span></div></div></section>
+</main>
+
+<footer id="pricing"><div class="container"><div class="footGrid">
+<div class="footBrand"><a class="brand" href="index.html"><span class="logo">M</span><span><b>Modem</b><small>Technologies</small></span></a><p>Modem Technologies — Building the infrastructure for a connected Africa.</p><p style="color:#c9d3e9">Made in Nigeria 🇳🇬</p></div>
+<div><h4>Product</h4><a href="documentation.html">SMS API</a><a href="documentation.html">OTP API</a><a href="#pricing">Pricing</a><a href="documentation.html">Documentation</a></div>
+<div><h4>Company</h4><a href="#about">About Us</a><a href="#">Careers</a><a href="#">Blog</a><a href="#">Contact</a></div>
+<div><h4>Legal</h4><a href="#">Terms of Service</a><a href="#">Privacy Policy</a><a href="#">Acceptable Use</a><a href="#">Security</a></div>
+<div><h4>Join Our Newsletter</h4><p>Get updates on new features, pricing and more.</p><form class="newsletter" onsubmit="subscribe(event)"><input type="email" placeholder="Enter your email address" required><button>→</button></form><div class="social"><a href="#">𝕏</a><a href="#">◉</a><a href="#">in</a><a href="#">▶</a></div></div>
+</div><div class="copy"><span>© 2026 Modem Technologies. All rights reserved.</span><span>SMS • OTP • APIs • Developers • Africa</span></div></div></footer>
+
+<script>
+function toggleMenu(){const n=document.querySelector('.links');n.style.display=n.style.display==='flex'?'':'flex';if(n.style.display){n.style.position='absolute';n.style.top='65px';n.style.left='14px';n.style.right='14px';n.style.padding='18px';n.style.flexDirection='column';n.style.background='#030a19f8';n.style.border='1px solid #5f7dff40';n.style.borderRadius='12px'}}
+function subscribe(e){e.preventDefault();alert('Thanks! We will keep you updated.');e.target.reset()}
+</script>
+</body>
+</html>
