@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Modem Technologies — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<style>
+:root{--bg:#070912;--side:#0b0f1d;--card:#101525;--card2:#151b2e;--bd:rgba(255,255,255,.08);--t:#fff;--m:#8992aa;--b:#4f7cff;--p:#805cff;--g:#20c997;--r:#ff5d73}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--t);font-family:Inter,Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.hidden{display:none!important}
+#login{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 20% 20%,#4f7cff22,transparent 35%),var(--bg);z-index:9}.login-card{width:92%;max-width:390px;background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:28px}.brand{text-align:center;margin-bottom:26px}.brand h1{font-size:28px;margin:0}.brand span,.logo span{color:var(--b)}.brand p,.muted{color:var(--m);font-size:12px}.field{margin:0 0 14px}.field label{display:block;color:#b5bfd3;font-size:11px;margin-bottom:6px}.field input,.field select,.field textarea{width:100%;padding:11px;background:var(--card2);border:1px solid var(--bd);border-radius:9px;color:#fff;outline:0}.field textarea{min-height:80px}.btn{border:0;border-radius:9px;padding:10px 14px;color:#fff;background:linear-gradient(135deg,var(--b),var(--p));font-weight:700;font-size:11px}.btn.secondary{background:var(--card2);border:1px solid var(--bd)}.error{color:#ff7283;font-size:11px;text-align:center;margin-top:10px}
+.layout{display:flex;min-height:100vh}.side{position:fixed;left:0;top:0;bottom:0;width:250px;background:var(--side);border-right:1px solid var(--bd);padding:22px 14px;z-index:4}.logo{padding:8px 12px 25px;font-size:21px;font-weight:800}.logo small{display:block;color:var(--m);font-size:10px;margin-top:4px}.mt{color:#59627a;font-size:10px;text-transform:uppercase;padding:12px}.nav{display:flex;gap:12px;align-items:center;width:100%;border:0;background:transparent;color:#929bb1;padding:12px;border-radius:10px;margin-bottom:4px;text-align:left;font-size:13px}.nav:hover,.nav.active{background:#4f7cff20;color:#7194ff}.nav i{width:20px;text-align:center}.logout{color:#ff6678;margin-top:25px}
+.main{margin-left:250px;width:calc(100% - 250px)}.top{height:72px;position:sticky;top:0;z-index:3;background:#070912ee;backdrop-filter:blur(14px);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between;padding:0 28px}.title{font-size:18px;font-weight:700}.avatar{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--b),var(--p));font-weight:800}.admin{display:flex;align-items:center;gap:10px}.admin small{color:var(--m)}
+.content{padding:28px}.section{display:none}.section.active{display:block}.welcome h1{margin:0 0 6px;font-size:24px}.welcome p{margin:0 0 24px;color:var(--m);font-size:13px}.status{padding:14px 16px;border-radius:12px;background:#20c99714;border:1px solid #20c9972c;color:#63e2bd;font-size:12px;margin-bottom:24px}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:22px}.stat,.panel,.tablebox,.card{background:var(--card);border:1px solid var(--bd);border-radius:15px}.stat{padding:18px}.stat label{color:var(--m);font-size:11px}.stat strong{display:block;font-size:26px;margin-top:15px}.sub{color:#69738d;font-size:10px;margin-top:4px}.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:18px}.head{padding:18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}.head h3{margin:0;font-size:14px}.head span{color:var(--m);font-size:10px}.activity{padding:6px 18px}.act{display:flex;gap:10px;padding:13px 0;border-bottom:1px solid var(--bd);font-size:11px}.act:last-child{border:0}.act i{color:#7194ff}.act small{display:block;color:var(--m);margin-top:4px}.actions{padding:18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}.action{padding:16px 10px;border:1px solid var(--bd);border-radius:11px;background:var(--card2);color:#dce2f2}.action i{display:block;color:#7194ff;font-size:18px;margin-bottom:8px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px}.toolbar h2{margin:0;font-size:22px}.toolbar p{margin:5px 0 0;color:var(--m);font-size:12px}.tablebox{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:650px}.table th,.table td{padding:12px 14px;border-bottom:1px solid var(--bd);text-align:left;font-size:11px}.table th{color:#69738d;font-size:10px;text-transform:uppercase}.badge{padding:4px 7px;border-radius:99px;font-size:9px}.green{background:#20c9971c;color:#5ce0b8}.red{background:#ff5d731c;color:#ff7889}.yellow{background:#f7c9481c;color:#f6d26b}.blue{background:#4f7cff1c;color:#80a2ff}.cards{display:grid;grid-template-columns:1fr 1fr;gap:15px}.card{padding:18px}.card h3{margin:0 0 15px;font-size:14px}.notice{padding:12px;border-radius:10px;font-size:11px;margin-bottom:15px;background:#4f7cff12;border:1px solid #4f7cff22;color:#a9bbff}.empty{text-align:center;color:var(--m);padding:30px;font-size:11px}
+@media(max-width:950px){.stats{grid-template-columns:1fr 1fr}.grid,.cards{grid-template-columns:1fr}}@media(max-width:700px){.side{width:70px;padding:15px 8px}.logo{padding:8px 4px 20px;text-align:center;font-size:16px}.logo small,.mt,.nav span,.admin small{display:none}.nav{justify-content:center;padding:13px 8px}.main{margin-left:70px;width:calc(100% - 70px)}.top{padding:0 15px}.content{padding:16px}.stats{gap:10px}.stat{padding:14px}.stat strong{font-size:20px}}
+</style></head><body>
+
+<div id="login"><div class="login-card"><div class="brand"><h1>Modem<span>Admin</span></h1><p>Modem Technologies Control Center</p></div>
+<form id="loginForm"><div class="field"><label>Email</label><input id="email" type="email" required></div><div class="field"><label>Password</label><input id="password" type="password" required></div><button class="btn" style="width:100%" id="loginBtn">Sign in</button><div id="loginError" class="error"></div></form></div></div>
+
+<div id="app" class="layout hidden"><aside class="side">
+<div class="logo">Modem<span>Tech</span><small>Administration</small></div><div class="mt">Main</div>
+<button class="nav active" data-s="dashboard"><i class="fas fa-chart-line"></i><span>Dashboard</span></button>
+<button class="nav" data-s="applications"><i class="fas fa-layer-group"></i><span>Applications</span></button>
+<button class="nav" data-s="api"><i class="fas fa-code"></i><span>API</span></button>
+<button class="nav" data-s="sms"><i class="fas fa-comment-sms"></i><span>SMS</span></button>
+<button class="nav" data-s="otp"><i class="fas fa-shield-halved"></i><span>OTP</span></button>
+<button class="nav" data-s="logs"><i class="fas fa-list"></i><span>Logs</span></button>
+<div class="mt">System</div>
+<button class="nav" data-s="providers"><i class="fas fa-network-wired"></i><span>Providers</span></button>
+<button class="nav" data-s="users"><i class="fas fa-users"></i><span>Users</span></button>
+<button class="nav" data-s="settings"><i class="fas fa-gear"></i><span>Settings</span></button>
+<button class="nav logout" id="logout"><i class="fas fa-right-from-bracket"></i><span>Logout</span></button>
+</aside>
+
+<main class="main"><header class="top"><div class="title" id="pageTitle">Admin Dashboard</div><div class="admin"><small id="adminEmail"></small><div class="avatar" id="avatar">Y</div></div></header><div class="content">
+
+<section class="section active" id="dashboard"><div class="welcome"><h1>Dashboard</h1><p>Monitor Modem Technologies in real time.</p></div><div class="status"><b>● System operational</b> &nbsp; All core services are currently available.</div>
+<div class="stats">
+<div class="stat"><label>Applications</label><strong id="nApps">—</strong><div class="sub"><span id="nActive">—</span> active</div></div>
+<div class="stat"><label>API Keys</label><strong id="nKeys">—</strong><div class="sub">active keys</div></div>
+<div class="stat"><label>SMS</label><strong id="nSms">—</strong><div class="sub"><span id="nSmsOk">—</span> successful</div></div>
+<div class="stat"><label>OTP</label><strong id="nOtp">—</strong><div class="sub"><span id="nOtpOk">—</span> verified</div></div>
+</div><div class="grid"><div class="panel"><div class="head"><h3>Recent Admin Activity</h3><span>Latest actions</span></div><div class="activity" id="activity"></div></div><div class="panel"><div class="head"><h3>Quick Actions</h3></div><div class="actions">
+<button class="action" data-s="applications"><i class="fas fa-plus"></i>Application</button><button class="action" data-s="api"><i class="fas fa-key"></i>API Keys</button><button class="action" data-s="sms"><i class="fas fa-paper-plane"></i>SMS</button><button class="action" data-s="otp"><i class="fas fa-lock"></i>OTP</button><button class="action" data-s="providers"><i class="fas fa-network-wired"></i>Providers</button><button class="action" data-s="settings"><i class="fas fa-gear"></i>Settings</button>
+</div></div></div></section>
+
+<section class="section" id="applications"><div class="toolbar"><div><h2>Applications</h2><p>All apps connected to Modem Technologies.</p></div><button class="btn" id="addApp">New Application</button></div><div class="tablebox"><table class="table"><thead><tr><th>Name</th><th>Sender</th><th>Service</th><th>Status</th><th>Created</th></tr></thead><tbody id="appsTable"></tbody></table></div></section>
+
+<section class="section" id="api"><div class="toolbar"><div><h2>API</h2><p>Public API and API key inventory.</p></div><button class="btn secondary" id="apiRefresh">Refresh</button></div><div class="notice"><b>Base API URL:</b> https://api.modemtechnologies.com/v1<br>Secret API keys are never displayed in this dashboard.</div><div class="tablebox"><table class="table"><thead><tr><th>Application</th><th>Prefix</th><th>Name</th><th>Status</th><th>Created</th><th>Last Used</th></tr></thead><tbody id="apiTable"></tbody></table></div></section>
+
+<section class="section" id="sms"><div class="toolbar"><div><h2>SMS</h2><p>Monitor SMS requests and delivery activity.</p></div><button class="btn secondary" id="smsRefresh">Refresh</button></div><div class="tablebox"><table class="table"><thead><tr><th>Phone</th><th>Application</th><th>Message</th><th>Status</th><th>Provider</th><th>Created</th></tr></thead><tbody id="smsTable"></tbody></table></div></section>
+
+<section class="section" id="otp"><div class="toolbar"><div><h2>OTP</h2><p>Monitor OTP requests, verification and expiry.</p></div><button class="btn secondary" id="otpRefresh">Refresh</button></div><div class="tablebox"><table class="table"><thead><tr><th>Phone</th><th>Application</th><th>Status</th><th>Attempts</th><th>Expires</th><th>Created</th></tr></thead><tbody id="otpTable"></tbody></table></div></section>
+
+<section class="section" id="logs"><div class="toolbar"><div><h2>Logs</h2><p>Operational API and admin logs.</p></div><button class="btn secondary" id="logsRefresh">Refresh</button></div><div class="cards"><div class="card"><h3>API Requests</h3><div id="apiLogs"></div></div><div class="card"><h3>Admin Activity</h3><div id="auditLogs"></div></div></div></section>
+
+<section class="section" id="providers"><div class="toolbar"><div><h2>Providers</h2><p>Manage SMS provider status and priority.</p></div><button class="btn secondary" id="providerRefresh">Refresh</button></div><div class="tablebox"><table class="table"><thead><tr><th>Provider</th><th>Type</th><th>Status</th><th>Priority</th><th>SMS</th><th>OTP</th><th></th></tr></thead><tbody id="providersTable"></tbody></table></div></section>
+
+<section class="section" id="users"><div class="toolbar"><div><h2>Admin Users</h2><p>Users with Modem Admin access.</p></div><button class="btn secondary" id="usersRefresh">Refresh</button></div><div class="tablebox"><table class="table"><thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Created</th></tr></thead><tbody id="usersTable"></tbody></table></div></section>
+
+<section class="section" id="settings"><div class="toolbar"><div><h2>Settings</h2><p>Platform-wide Modem Technologies configuration.</p></div><button class="btn secondary" id="settingsRefresh">Refresh</button></div><div class="card" id="settingsBox"></div></section>
+
+</div></main></div>
+
+<script>
+const URL="https://qrwekafcblukxnoficeo.supabase.co";
+const KEY="sb_publishable_WwmKxupdfvpF9DV9baOCLQ_jeII1j66";
+const db=supabase.createClient(URL,KEY);
+const titles={dashboard:"Admin Dashboard",applications:"Applications",api:"API",sms:"SMS",otp:"OTP",logs:"Logs",providers:"Providers",users:"Users",settings:"Settings"};
+const esc=x=>String(x??"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+const time=x=>x?new Date(x).toLocaleString([],{day:"2-digit",month:"short",hour:"2-digit",minute:"2-digit"}):"—";
+function badge(x){let s=String(x||"unknown").toLowerCase(),c=["active","sent","delivered","success","verified","operational"].includes(s)?"green":["failed","revoked","expired","suspended"].includes(s)?"red":["pending","maintenance"].includes(s)?"yellow":"blue";return `<span class="badge ${c}">${esc(x||"unknown")}</span>`}
+function empty(n,msg="No records found"){return `<tr><td colspan="${n}" class="empty">${esc(msg)}</td></tr>`}
+function nav(s){document.querySelectorAll(".section").forEach(x=>x.classList.remove("active"));document.getElementById(s).classList.add("active");document.querySelectorAll(".nav").forEach(x=>x.classList.toggle("active",x.dataset.s===s));document.getElementById("pageTitle").textContent=titles[s];load[s]?.();scrollTo(0,0)}
+const load={};
+
+document.querySelectorAll("[data-s]").forEach(x=>x.addEventListener("click",()=>nav(x.dataset.s)));
+
+async function check(){
+ const {data:{session}}=await db.auth.getSession();
+ if(!session){login.classList.remove("hidden");app.classList.add("hidden");return}
+ const {data:a,error}=await db.from("admin_users").select("email,role,status").eq("id",session.user.id).maybeSingle();
+ if(error||!a||a.status!=="active"){await db.auth.signOut();login.classList.remove("hidden");loginError.textContent=error?.message||"You do not have admin access.";return}
+ login.classList.add("hidden");app.classList.remove("hidden");adminEmail.textContent=session.user.email||a.email;avatar.textContent=(session.user.email||"A")[0].toUpperCase();nav("dashboard")
+}
+loginForm.onsubmit=async e=>{e.preventDefault();loginBtn.disabled=true;loginBtn.textContent="Signing in...";loginError.textContent="";let r=await db.auth.signInWithPassword({email:email.value.trim(),password:password.value});if(r.error)loginError.textContent=r.error.message;else await check();loginBtn.disabled=false;loginBtn.textContent="Sign in"};
+logout.onclick=async()=>{await db.auth.signOut();location.reload()};
+
+load.dashboard=async()=>{
+ let {data:d,error}=await db.rpc("get_admin_dashboard_stats");if(error)return console.error(error);
+ nApps.textContent=d.applications??0;nActive.textContent=d.active_applications??0;nKeys.textContent=d.api_keys??0;nSms.textContent=d.sms_total??0;nSmsOk.textContent=d.sms_success??0;nOtp.textContent=d.otp_total??0;nOtpOk.textContent=d.otp_verified??0;
+ let r=await db.rpc("get_admin_recent_activity",{p_limit:20});activity.innerHTML=r.error?`<div class="empty">${esc(r.error.message)}</div>`:r.data?.length?r.data.map(x=>`<div class="act"><i class="fas fa-bolt"></i><div><b>${esc(x.action)}</b><small>${esc(x.description||"")}</small></div></div>`).join(""):`<div class="empty">No activity yet.</div>`;
+};
+load.applications=async()=>{appsTable.innerHTML=empty(5,"Loading...");let r=await db.from("applications").select("name,sender_name,service,status,created_at").order("created_at",{ascending:false});appsTable.innerHTML=r.error?empty(5,r.error.message):r.data?.length?r.data.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.sender_name||"—")}</td><td>${esc(x.service||"—")}</td><td>${badge(x.status)}</td><td>${time(x.created_at)}</td></tr>`).join(""):empty(5)};
+load.api=async()=>{apiTable.innerHTML=empty(6,"Loading...");let r=await db.from("api_keys").select("name,key_prefix,revoked_at,expires_at,created_at,last_used_at,applications(name)").order("created_at",{ascending:false});apiTable.innerHTML=r.error?empty(6,r.error.message):r.data?.length?r.data.map(x=>`<tr><td>${esc(x.applications?.name||"—")}</td><td>${esc(x.key_prefix||"—")}</td><td>${esc(x.name)}</td><td>${badge(x.revoked_at?"revoked":x.expires_at&&new Date(x.expires_at)<=new Date()?"expired":"active")}</td><td>${time(x.created_at)}</td><td>${time(x.last_used_at)}</td></tr>`).join(""):empty(6)};
+load.sms=async()=>{smsTable.innerHTML=empty(6,"Loading...");let r=await db.from("sms_logs").select("phone,message,status,provider,created_at,applications(name)").order("created_at",{ascending:false}).limit(100);smsTable.innerHTML=r.error?empty(6,r.error.message):r.data?.length?r.data.map(x=>`<tr><td>${esc(x.phone)}</td><td>${esc(x.applications?.name||"—")}</td><td>${esc((x.message||"").slice(0,45))}</td><td>${badge(x.status)}</td><td>${esc(x.provider||"—")}</td><td>${time(x.created_at)}</td></tr>`).join(""):empty(6)};
+load.otp=async()=>{otpTable.innerHTML=empty(6,"Loading...");let r=await db.from("otp_logs").select("phone,status,attempts,expires_at,created_at,applications(name)").order("created_at",{ascending:false}).limit(100);otpTable.innerHTML=r.error?empty(6,r.error.message):r.data?.length?r.data.map(x=>`<tr><td>${esc(x.phone)}</td><td>${esc(x.applications?.name||"—")}</td><td>${badge(x.status)}</td><td>${x.attempts??0}</td><td>${time(x.expires_at)}</td><td>${time(x.created_at)}</td></tr>`).join(""):empty(6)};
+load.logs=async()=>{apiLogs.innerHTML="Loading...";auditLogs.innerHTML="Loading...";let a=await db.from("api_request_logs").select("*").order("created_at",{ascending:false}).limit(10),b=await db.from("admin_activity_logs").select("*").order("created_at",{ascending:false}).limit(10);apiLogs.innerHTML=a.error?esc(a.error.message):a.data?.length?a.data.map(x=>`<div class="act"><i class="fas fa-code"></i><div><b>${esc(x.method||x.action||"API request")}</b><small>${esc(x.path||x.endpoint||"")}</small></div></div>`).join(""):"No API logs.";auditLogs.innerHTML=b.error?esc(b.error.message):b.data?.length?b.data.map(x=>`<div class="act"><i class="fas fa-bolt"></i><div><b>${esc(x.action)}</b><small>${esc(x.description||"")}</small></div></div>`).join(""):"No audit logs."};
+load.providers=async()=>{providersTable.innerHTML=empty(7,"Loading...");let r=await db.from("sms_providers").select("id,name,provider_type,status,priority,supports_sms,supports_otp").order("priority");providersTable.innerHTML=r.error?empty(7,r.error.message):r.data?.length?r.data.map(x=>`<tr><td>${esc(x.name)}</td><td>${esc(x.provider_type)}</td><td>${badge(x.status)}</td><td>${x.priority}</td><td>${x.supports_sms?"Yes":"No"}</td><td>${x.supports_otp?"Yes":"No"}</td><td><button class="btn secondary" onclick="toggleProvider('${x.id}','${x.status}')">${x.status==="active"?"Disable":"Activate"}</button></td></tr>`).join(""):empty(7)};
+async function toggleProvider(id,status){let r=await db.from("sms_providers").update({status:status==="active"?"inactive":"active",updated_at:new Date().toISOString()}).eq("id",id);if(r.error)alert(r.error.message);load.providers();load.dashboard()}
+load.users=async()=>{usersTable.innerHTML=empty(4,"Loading...");let r=await db.from("admin_users").select("email,role,status,created_at").order("created_at",{ascending:false});usersTable.innerHTML=r.error?empty(4,r.error.message):r.data?.length?r.data.map(x=>`<tr><td>${esc(x.email)}</td><td>${badge(x.role)}</td><td>${badge(x.status)}</td><td>${time(x.created_at)}</td></tr>`).join(""):empty(4)};
+load.settings=async()=>{settingsBox.innerHTML="Loading...";let r=await db.from("system_settings").select("id,setting_key,setting_value,description").order("setting_key");if(r.error){settingsBox.textContent=r.error.message;return}settingsBox.innerHTML=r.data?.length?r.data.map(x=>`<div class="field"><label>${esc(x.setting_key)} ${x.description?"— "+esc(x.description):""}</label><div style="display:flex;gap:8px"><input id="set_${x.id}" value="${esc(x.setting_value||"")}"><button class="btn" onclick="saveSetting('${x.id}')">Save</button></div></div>`).join(""):"No settings found."};
+async function saveSetting(id){let v=document.getElementById("set_"+id).value;let u=(await db.auth.getUser()).data.user;let r=await db.from("system_settings").update({setting_value:v,updated_by:u.id,updated_at:new Date().toISOString()}).eq("id",id);if(r.error)alert(r.error.message);else alert("Setting saved");}
+apiRefresh.onclick=load.api;smsRefresh.onclick=load.sms;otpRefresh.onclick=load.otp;logsRefresh.onclick=load.logs;providerRefresh.onclick=load.providers;usersRefresh.onclick=load.users;settingsRefresh.onclick=load.settings;
+addApp.onclick=()=>alert("Application creation will be added here next. Existing applications are already managed in this dashboard.");
+check();
+</script></body></html>
