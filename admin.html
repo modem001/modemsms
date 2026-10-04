@@ -171,5 +171,4 @@ load.settings=async()=>{settingsBox.innerHTML="Loading...";let r=await db.from("
 async function saveSetting(id){let v=document.getElementById("set_"+id).value;let u=(await db.auth.getUser()).data.user;let r=await db.from("system_settings").update({setting_value:v,updated_by:u.id,updated_at:new Date().toISOString()}).eq("id",id);if(r.error)alert(r.error.message);else alert("Setting saved");}
 apiRefresh.onclick=load.api;smsRefresh.onclick=load.sms;otpRefresh.onclick=load.otp;logsRefresh.onclick=load.logs;providerRefresh.onclick=load.providers;usersRefresh.onclick=load.users;settingsRefresh.onclick=load.settings;
 addApp.onclick=()=>alert("Application creation will be added here next. Existing applications are already managed in this dashboard.");
-check();
 </script></body></html>
