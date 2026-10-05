@@ -1,38 +1,84 @@
-<!doctype html><html lang="en"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Modem — Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Modem Technologies — Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box}body{margin:0;background:#020511;color:#fff;font-family:Inter;display:flex;justify-content:center}.app{width:100%;max-width:430px;min-height:100vh;padding-bottom:80px;background:radial-gradient(circle at 90% 0,#27136c55,transparent 32%),#020511}.head{position:sticky;top:0;z-index:5;padding:14px 16px;background:#030713e8;backdrop-filter:blur(16px);border-bottom:1px solid #ffffff0c;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;gap:9px;align-items:center}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,#2864ff,#8b3cff);display:grid;place-items:center;font-weight:800;font-size:22px;font-style:italic}.brand b{font:800 15px 'Plus Jakarta Sans'}.brand small{display:block;color:#7e89ad;font-size:9px}.head button{border:1px solid #273267;background:#09112c;color:#fff;border-radius:11px;padding:9px 11px}.main{padding:16px}.hero,.card{background:linear-gradient(145deg,#0a1433,#050a20);border:1px solid #1a2a5d;border-radius:19px;padding:16px;margin-bottom:12px}.hero{border-color:#315dff88;background:radial-gradient(circle at 90% 10%,#4e30c766,transparent 40%),linear-gradient(145deg,#081743,#050b21)}.hero small{color:#94a0c6;font-size:9px}.hero h1{font:800 24px 'Plus Jakarta Sans';margin:5px 0}.hero p{color:#9ba5c8;font-size:11px;line-height:1.55}.grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.stat b{font-size:22px;display:block;margin-top:10px}.stat span{font-size:10px;color:#8e98ba}.bar{height:5px;background:#101b3c;border-radius:8px;margin-top:9px}.bar i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,#a13cff,#3276ff)}.title{display:flex;justify-content:space-between;align-items:center;margin:17px 2px 9px}.title b{font-size:13px}.title a{font-size:10px;color:#a184ff;text-decoration:none}.row{display:flex;gap:10px;align-items:center;padding:11px 0;border-bottom:1px solid #ffffff0a}.row:last-child{border:0}.appicon{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,#7240ff,#2e64ff);font-weight:800}.rowmain{flex:1}.rowmain b{display:block;font-size:11px}.rowmain span{display:block;color:#7985aa;font-size:9px;margin-top:3px}.green{color:#48e7a5;font-size:9px;font-weight:700}.btn{width:100%;padding:12px;border:0;border-radius:12px;color:#fff;font-weight:800;background:linear-gradient(135deg,#315dff,#783dff);margin-top:10px}.code{font:9px/1.6 monospace;background:#030714;border:1px solid #ffffff0c;border-radius:12px;padding:12px;color:#c5cdf0;white-space:pre-wrap}.nav{position:fixed;bottom:0;z-index:10;width:100%;max-width:430px;background:#030713f2;backdrop-filter:blur(16px);border-top:1px solid #ffffff0c;display:grid;grid-template-columns:repeat(5,1fr);padding:8px 5px calc(8px + env(safe-area-inset-bottom))}.nav a{text-decoration:none;color:#737eaa;text-align:center;font-size:8px;font-weight:700;padding:6px 2px;border-radius:10px}.nav a i{font-style:normal;font-size:17px;display:block;margin-bottom:4px}.nav a.on{color:#a083ff;background:#7a40ff12}.msg{color:#73edb3;font-size:11px}
-</style></head><body><div class="app">
-<header class="head"><div class="brand"><div class="logo">M</div><div><b>Modem Technologies</b><small>Developer Console</small></div></div><button onclick="logout()">Logout</button></header>
-<main class="main"><section class="hero"><small>WELCOME BACK</small><h1 id="name">Developer</h1><p>Monitor your applications, API usage, SMS and OTP activity from one place.</p><div class="msg" id="status"></div></section>
-<div class="grid"><div class="card stat"><span>SMS Credits</span><b id="credits">0</b><div class="bar"><i id="creditbar" style="width:0%"></i></div></div><div class="card stat"><span>OTP Requests</span><b id="otps">0</b><span>This account</span></div><div class="card stat"><span>SMS Sent</span><b id="sms">0</b><span>This account</span></div><div class="card stat"><span>Applications</span><b id="apps">0</b><span>Connected apps</span></div></div>
-<div class="title"><b>Your Applications</b><a href="applications.html">View all</a></div><section class="card" id="appList">Loading...</section>
-<div class="title"><b>Recent Activity</b><a href="logs.html">View all</a></div><section class="card" id="activity">Loading...</section>
-<div class="title"><b>API Quick Access</b><a href="api.html">Open API</a></div><section class="card"><div class="code">POST /v1/otp/send
-
-{
-  "application": "StudentX",
-  "phone": user.phone
-}</div><button class="btn" onclick="location.href='documentation.html'">View Documentation</button></section>
-<div class="title"><b>Quick Actions</b></div><section class="card"><button class="btn" onclick="location.href='applications.html'">Manage Applications</button><button class="btn" onclick="location.href='sms.html'">Send SMS</button><button class="btn" onclick="location.href='otp.html'">Create OTP</button></section>
+:root{--bg:#020511;--surface:#08112d;--surface2:#0d1737;--border:#1b2a5c;--text:#fff;--muted:#8e98ba;--primary:#315dff;--secondary:#783dff;--success:#20c997;--warning:#ffd65a;--danger:#ff687d}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}.app{max-width:430px;min-height:100vh;margin:auto;padding-bottom:80px}.header{height:72px;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:grid;place-items:center;font-size:22px;font-weight:800;font-style:italic}.brand b{display:block;font-size:15px}.brand small{display:block;color:var(--muted);font-size:9px;margin-top:3px}.head-actions{display:flex;gap:7px}.icon{width:38px;height:38px;border:1px solid var(--border);border-radius:11px;background:var(--surface2);color:var(--text);font-size:16px}.content{padding:18px}.welcome h1{font-size:23px;margin-bottom:6px}.welcome p{font-size:10px;color:var(--muted);line-height:1.5;margin-bottom:16px}.status{display:flex;align-items:center;gap:8px;padding:12px;border:1px solid rgba(32,201,151,.2);background:rgba(32,201,151,.07);border-radius:13px;color:#67dfbf;font-size:9px;margin-bottom:15px}.dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 9px var(--success)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}.stat,.panel{background:var(--surface);border:1px solid var(--border);border-radius:16px}.stat{padding:14px}.stat i{color:#7693ff;font-style:normal;font-size:15px}.label{font-size:9px;color:var(--muted);margin-top:9px}.value{font-size:21px;font-weight:800;margin-top:3px}.sub{font-size:8px;color:var(--muted);margin-top:4px}.panel{overflow:hidden;margin-bottom:15px}.panelhead{padding:15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}.panelhead b{font-size:12px}.panelhead span{font-size:9px;color:var(--muted)}.row{display:flex;align-items:center;gap:10px;padding:13px 15px;border-bottom:1px solid var(--border)}.row:last-child{border-bottom:0}.rowicon{width:37px;height:37px;border-radius:11px;background:rgba(49,93,255,.12);color:#7693ff;display:grid;place-items:center;flex-shrink:0;font-weight:800}.rowmain{flex:1;min-width:0}.rowtitle{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rowsub{font-size:8px;color:var(--muted);margin-top:4px}.badge{font-size:7px;font-weight:800;padding:4px 7px;border-radius:99px;text-transform:uppercase}.pending{background:rgba(255,214,90,.12);color:var(--warning)}.active{background:rgba(32,201,151,.12);color:var(--success)}.declined{background:rgba(255,104,125,.12);color:var(--danger)}.empty{padding:27px 15px;text-align:center;color:var(--muted);font-size:10px}.quick{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:13px}.quick button{border:1px solid var(--border);background:var(--surface2);color:var(--text);border-radius:13px;padding:14px 7px}.quick i{display:block;color:#7693ff;font-size:18px;font-style:normal;margin-bottom:7px}.quick span{font-size:9px;font-weight:700}.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--surface);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding:7px 4px calc(7px + env(safe-area-inset-bottom));z-index:50}.nav{border:0;background:none;color:var(--muted);font-size:8px;font-weight:700;padding:5px}.nav i{display:block;font-style:normal;font-size:16px;margin-bottom:4px}.nav.on{color:#8b79ff}html[data-theme=light]{--bg:#f4f6fb;--surface:#fff;--surface2:#eef2fa;--border:#dfe4ef;--text:#101522;--muted:#667085}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header"><div class="brand"><div class="logo">M</div><div><b>Modem Technologies</b><small>User Dashboard</small></div></div><div class="head-actions"><button class="icon" data-theme-toggle>☀</button><button class="icon" id="logout">↪</button></div></header>
+<main class="content">
+<div class="welcome"><h1 id="welcome">Dashboard</h1><p>Manage your applications, API access, SMS, OTP and account.</p></div>
+<div class="status"><span class="dot"></span><b>Modem services operational</b><span>API & OTP available</span></div>
+<div class="grid">
+<div class="stat"><i>▦</i><div class="label">Applications</div><div class="value" id="apps">—</div><div class="sub" id="activeApps">— active</div></div>
+<div class="stat"><i>◆</i><div class="label">API Keys</div><div class="value" id="keys">—</div><div class="sub">active keys</div></div>
+<div class="stat"><i>SMS</i><div class="label">SMS Requests</div><div class="value" id="sms">—</div><div class="sub" id="delivered">— delivered</div></div>
+<div class="stat"><i>OTP</i><div class="label">OTP Requests</div><div class="value" id="otp">—</div><div class="sub" id="verified">— verified</div></div>
+</div>
+<section class="panel"><div class="panelhead"><b>My Applications</b><span>Latest</span></div><div id="applications"><div class="empty">Loading applications...</div></div></section>
+<section class="panel"><div class="panelhead"><b>Wallet</b><span>Account balance</span></div><div class="row"><div class="rowicon">$</div><div class="rowmain"><div class="rowtitle" id="balance">—</div><div class="rowsub" id="credits">Loading...</div></div></div></section>
+<section class="panel"><div class="panelhead"><b>Quick Actions</b></div><div class="quick">
+<button onclick="openPage('applications.html')"><i>＋</i><span>Applications</span></button>
+<button onclick="openPage('api.html')"><i>◆</i><span>API Keys</span></button>
+<button onclick="openPage('sms.html')"><i>➤</i><span>SMS</span></button>
+<button onclick="openPage('otp.html')"><i>▣</i><span>OTP</span></button>
+</div></section>
+<section class="panel"><div class="panelhead"><b>Recent API Activity</b><span>Latest 5</span></div><div id="activity"><div class="empty">Loading activity...</div></div></section>
 </main>
-<nav class="nav"><a class="on" href="dashboard.html"><i>⌂</i>Dashboard</a><a href="applications.html"><i>▦</i>Apps</a><a href="api.html"><i>&lt;/&gt;</i>API</a><a href="sms.html"><i>▣</i>SMS</a><a href="settings.html"><i>⚙</i>Settings</a></nav>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="supabase.js"></script>
+<nav class="bottom"><button class="nav on"><i>⌂</i>Dashboard</button><button class="nav" onclick="openPage('applications.html')"><i>▦</i>Applications</button><button class="nav" onclick="openPage('api.html')"><i>◆</i>API</button><button class="nav" onclick="openPage('sms.html')"><i>✈</i>SMS</button><button class="nav" onclick="openPage('otp.html')"><i>▣</i>OTP</button></nav>
+</div>
 <script>
-async function load(){
- const u=await requireUser();if(!u)return;
- const p=await getProfile(u.id);document.getElementById('name').textContent=p?.full_name||u.email;
- const {data:apps}=await modem.from('applications').select('*').eq('user_id',u.id).order('created_at',{ascending:false});
- document.getElementById('apps').textContent=apps?.length||0;
- document.getElementById('appList').innerHTML=apps?.length?apps.slice(0,4).map(a=>`<div class="row"><div class="appicon">${esc(a.name[0])}</div><div class="rowmain"><b>${esc(a.name)}</b><span>${esc((a.services||[]).join(' + ').toUpperCase())}</span></div><span class="green">● ${esc(a.status)}</span></div>`).join(''):'<div class="rowmain"><b>No applications yet</b><span>Create your first application.</span></div>';
- const {data:sms}=await modem.from('sms_logs').select('id').eq('user_id',u.id);
- const {data:otp}=await modem.from('otp_logs').select('id').eq('user_id',u.id);
- document.getElementById('sms').textContent=sms?.length||0;document.getElementById('otps').textContent=otp?.length||0;
- document.getElementById('credits').textContent=p?.sms_credits||0;document.getElementById('creditbar').style.width=Math.min(100,((p?.sms_credits||0)/20000)*100)+'%';
- const {data:recent}=await modem.from('sms_logs').select('*,applications(name)').eq('user_id',u.id).order('created_at',{ascending:false}).limit(5);
- document.getElementById('activity').innerHTML=recent?.length?recent.map(x=>`<div class="row"><div class="appicon">S</div><div class="rowmain"><b>SMS ${esc(x.status)}</b><span>${esc(x.applications?.name||'Application')} • ${new Date(x.created_at).toLocaleString()}</span></div></div>`).join(''):'<div class="rowmain"><b>No activity yet</b><span>SMS and OTP activity will appear here.</span></div>';
+const URL="https://qrwekafcblukxnoficeo.supabase.co";
+const KEY="sb_publishable_WwmKxupdfvpF9DV9baOCLQ_jeII1j66";
+const db=supabase.createClient(URL,KEY);
+let user=null;
+const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+function openPage(p){window.location.href=p}
+async function start(){
+const {data:{session}}=await db.auth.getSession();
+if(!session){window.location.href="auth.html";return}
+user=session.user;
+document.getElementById("welcome").textContent="Welcome back, "+((user.email||"User").split("@")[0]);
+await Promise.all([loadApps(),loadWallet(),loadActivity(),loadKeys(),loadStats()]);
 }
-async function logout(){await modem.auth.signOut();location.href='auth.html'} load();
-</script></div></body></html>
+async function loadApps(){
+const {data,error}=await db.rpc("get_application_overview",{p_user_id:user.id});
+if(error){document.getElementById("applications").innerHTML='<div class="empty">'+esc(error.message)+'</div>';return}
+const a=data||[];document.getElementById("apps").textContent=a.length;document.getElementById("activeApps").textContent=a.filter(x=>x.status==="active").length+" active";
+if(!a.length){document.getElementById("applications").innerHTML='<div class="empty">No applications yet.</div>';return}
+document.getElementById("applications").innerHTML=a.slice(0,5).map(x=>{
+const s=x.status||"pending";const cls=["pending","active","declined"].includes(s)?s:"pending";const label=s==="active"?"Approved":s.charAt(0).toUpperCase()+s.slice(1);
+return '<div class="row"><div class="rowicon">'+esc((x.application_name||"A")[0].toUpperCase())+'</div><div class="rowmain"><div class="rowtitle">'+esc(x.application_name)+'</div><div class="rowsub">Sender: '+esc(x.sender_name||"—")+' · '+esc(x.service||"—")+'</div></div><span class="badge '+cls+'">'+label+'</span></div>';
+}).join("");
+}
+async function loadWallet(){
+const {data,error}=await db.rpc("get_wallet_statistics",{p_user_id:user.id});if(error)return;
+const w=(data&&data[0])||{};document.getElementById("balance").textContent=(w.currency||"NGN")+" "+Number(w.balance||0).toLocaleString();document.getElementById("credits").textContent=Number(w.sms_credits||0).toLocaleString()+" SMS credits";
+}
+async function loadActivity(){
+const {data,error}=await db.rpc("get_recent_api_activity",{p_user_id:user.id,p_limit:5});if(error||!data||!data.length){document.getElementById("activity").innerHTML='<div class="empty">No API activity yet.</div>';return}
+document.getElementById("activity").innerHTML=data.map(x=>'<div class="row"><div class="rowicon">↗</div><div class="rowmain"><div class="rowtitle">'+esc(x.endpoint||"API Request")+'</div><div class="rowsub">'+esc(x.method||"")+' · '+esc(x.request_type||"")+'</div></div><span class="badge '+(x.status==="success"?"active":"declined")+'">'+esc(x.status||x.status_code||"—")+'</span></div>').join("");
+}
+async function loadKeys(){
+const {data,error}=await db.from("api_keys").select("id").eq("user_id",user.id).is("revoked_at",null);if(!error)document.getElementById("keys").textContent=(data||[]).length;
+}
+async function loadStats(){
+const apps=await db.rpc("get_application_overview",{p_user_id:user.id});let totalSms=0,totalOtp=0,delivered=0,verified=0;
+(apps.data||[]).forEach(x=>{totalSms+=Number(x.sms_requests||0);delivered+=Number(x.total_sms_delivered||0);totalOtp+=Number(x.otp_requests||0)});
+document.getElementById("sms").textContent=totalSms;document.getElementById("delivered").textContent=delivered+" delivered";document.getElementById("otp").textContent=totalOtp;
+const o=await db.rpc("get_recent_otp_activity",{p_user_id:user.id,p_limit:100});verified=(o.data||[]).filter(x=>x.status==="verified").length;document.getElementById("verified").textContent=verified+" verified";
+}
+document.getElementById("logout").onclick=async()=>{await db.auth.signOut();window.location.href="auth.html"};
+start();
+</script>
+</body>
+</html>
