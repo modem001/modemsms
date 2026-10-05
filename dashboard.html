@@ -41,43 +41,225 @@ const URL="https://qrwekafcblukxnoficeo.supabase.co";
 const KEY="sb_publishable_WwmKxupdfvpF9DV9baOCLQ_jeII1j66";
 const db=supabase.createClient(URL,KEY);
 let user=null;
+
 const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
 function openPage(p){window.location.href=p}
+
+function setText(id,value){const el=document.getElementById(id);if(el)el.textContent=value}
+function setError(id,message){const el=document.getElementById(id);if(el)el.innerHTML='<div class="empty">'+esc(message)+'</div>'}
+
 async function start(){
-const {data:{session}}=await db.auth.getSession();
-if(!session){window.location.href="auth.html";return}
-user=session.user;
-document.getElementById("welcome").textContent="Welcome back, "+((user.email||"User").split("@")[0]);
-await Promise.all([loadApps(),loadWallet(),loadActivity(),loadKeys(),loadStats()]);
+  const {data:{session},error:sessionError}=await db.auth.getSession();
+
+  if(sessionError){
+    console.error("Session error:",sessionError);
+    window.location.href="auth.html";
+    return;
+  }
+
+  if(!session){
+    window.location.href="auth.html";
+    return;
+  }
+
+  user=session.user;
+  setText("welcome","Welcome back, "+((user.email||"User").split("@")[0]));
+
+  await Promise.allSettled([
+    loadApplications(),
+    loadWallet(),
+    loadApiActivity(),
+    loadApiKeys(),
+    loadStats()
+  ]);
 }
-async function loadApps(){
-const {data,error}=await db.rpc("get_application_overview",{p_user_id:user.id});
-if(error){document.getElementById("applications").innerHTML='<div class="empty">'+esc(error.message)+'</div>';return}
-const a=data||[];document.getElementById("apps").textContent=a.length;document.getElementById("activeApps").textContent=a.filter(x=>x.status==="active").length+" active";
-if(!a.length){document.getElementById("applications").innerHTML='<div class="empty">No applications yet.</div>';return}
-document.getElementById("applications").innerHTML=a.slice(0,5).map(x=>{
-const s=x.status||"pending";const cls=["pending","active","declined"].includes(s)?s:"pending";const label=s==="active"?"Approved":s.charAt(0).toUpperCase()+s.slice(1);
-return '<div class="row"><div class="rowicon">'+esc((x.application_name||"A")[0].toUpperCase())+'</div><div class="rowmain"><div class="rowtitle">'+esc(x.application_name)+'</div><div class="rowsub">Sender: '+esc(x.sender_name||"—")+' · '+esc(x.service||"—")+'</div></div><span class="badge '+cls+'">'+label+'</span></div>';
-}).join("");
+
+/* APPLICATIONS */
+async function loadApplications(){
+  const {data,error}=await db
+    .from("applications")
+    .select("id,name,sender_name,service,status,created_at")
+    .eq("user_id",user.id)
+    .order("created_at",{ascending:false})
+    .limit(5);
+
+  if(error){
+    console.error("Applications:",error);
+    setError("applications","Could not load applications.");
+    return;
+  }
+
+  const apps=data||[];
+
+  setText("apps",apps.length);
+
+  const activeCount=apps.filter(x=>x.status==="active").length;
+  setText("activeApps",activeCount+" active");
+
+  if(!apps.length){
+    setError("applications","No applications yet.");
+    return;
+  }
+
+  document.getElementById("applications").innerHTML=apps.map(x=>{
+    const s=x.status||"pending";
+    const cls=["pending","active","declined"].includes(s)?s:"pending";
+    const label=s==="active"?"Approved":
+                 s==="declined"?"Declined":
+                 s==="pending"?"Pending":
+                 s.charAt(0).toUpperCase()+s.slice(1);
+
+    return `
+      <div class="row">
+        <div class="rowicon">${esc((x.name||"A")[0].toUpperCase())}</div>
+        <div class="rowmain">
+          <div class="rowtitle">${esc(x.name||"Application")}</div>
+          <div class="rowsub">Sender: ${esc(x.sender_name||"—")} · ${esc(x.service||"—")}</div>
+        </div>
+        <span class="badge ${cls}">${label}</span>
+      </div>`;
+  }).join("");
 }
+
+/* WALLET */
 async function loadWallet(){
-const {data,error}=await db.rpc("get_wallet_statistics",{p_user_id:user.id});if(error)return;
-const w=(data&&data[0])||{};document.getElementById("balance").textContent=(w.currency||"NGN")+" "+Number(w.balance||0).toLocaleString();document.getElementById("credits").textContent=Number(w.sms_credits||0).toLocaleString()+" SMS credits";
+  const {data,error}=await db
+    .from("wallets")
+    .select("balance,currency,sms_credits")
+    .eq("user_id",user.id)
+    .maybeSingle();
+
+  if(error){
+    console.error("Wallet:",error);
+    setText("balance","NGN 0");
+    setText("credits","0 SMS credits");
+    return;
+  }
+
+  if(!data){
+    setText("balance","NGN 0");
+    setText("credits","0 SMS credits");
+    return;
+  }
+
+  setText("balance",(data.currency||"NGN")+" "+Number(data.balance||0).toLocaleString());
+  setText("credits",Number(data.sms_credits||0).toLocaleString()+" SMS credits");
 }
-async function loadActivity(){
-const {data,error}=await db.rpc("get_recent_api_activity",{p_user_id:user.id,p_limit:5});if(error||!data||!data.length){document.getElementById("activity").innerHTML='<div class="empty">No API activity yet.</div>';return}
-document.getElementById("activity").innerHTML=data.map(x=>'<div class="row"><div class="rowicon">↗</div><div class="rowmain"><div class="rowtitle">'+esc(x.endpoint||"API Request")+'</div><div class="rowsub">'+esc(x.method||"")+' · '+esc(x.request_type||"")+'</div></div><span class="badge '+(x.status==="success"?"active":"declined")+'">'+esc(x.status||x.status_code||"—")+'</span></div>').join("");
+
+/* API KEYS */
+async function loadApiKeys(){
+  const {data,error}=await db
+    .from("api_keys")
+    .select("id")
+    .eq("user_id",user.id)
+    .is("revoked_at",null);
+
+  if(error){
+    console.error("API keys:",error);
+    setText("keys","0");
+    return;
+  }
+
+  setText("keys",(data||[]).length);
 }
-async function loadKeys(){
-const {data,error}=await db.from("api_keys").select("id").eq("user_id",user.id).is("revoked_at",null);if(!error)document.getElementById("keys").textContent=(data||[]).length;
+
+/* RECENT API ACTIVITY */
+async function loadApiActivity(){
+  const {data,error}=await db
+    .from("api_request_logs")
+    .select("id,endpoint,method,request_type,status,status_code,created_at")
+    .eq("user_id",user.id)
+    .order("created_at",{ascending:false})
+    .limit(5);
+
+  if(error){
+    console.error("API activity:",error);
+    setError("activity","Could not load API activity.");
+    return;
+  }
+
+  if(!data||!data.length){
+    setError("activity","No API activity yet.");
+    return;
+  }
+
+  document.getElementById("activity").innerHTML=data.map(x=>{
+    const ok=x.status==="success" || Number(x.status_code)>=200 && Number(x.status_code)<300;
+    return `
+      <div class="row">
+        <div class="rowicon">↗</div>
+        <div class="rowmain">
+          <div class="rowtitle">${esc(x.endpoint||"API Request")}</div>
+          <div class="rowsub">${esc(x.method||"")} · ${esc(x.request_type||"")}</div>
+        </div>
+        <span class="badge ${ok?"active":"declined"}">${esc(x.status||x.status_code||"—")}</span>
+      </div>`;
+  }).join("");
 }
+
+/* SMS + OTP STATS */
 async function loadStats(){
-const apps=await db.rpc("get_application_overview",{p_user_id:user.id});let totalSms=0,totalOtp=0,delivered=0,verified=0;
-(apps.data||[]).forEach(x=>{totalSms+=Number(x.sms_requests||0);delivered+=Number(x.total_sms_delivered||0);totalOtp+=Number(x.otp_requests||0)});
-document.getElementById("sms").textContent=totalSms;document.getElementById("delivered").textContent=delivered+" delivered";document.getElementById("otp").textContent=totalOtp;
-const o=await db.rpc("get_recent_otp_activity",{p_user_id:user.id,p_limit:100});verified=(o.data||[]).filter(x=>x.status==="verified").length;document.getElementById("verified").textContent=verified+" verified";
+  const {data:apps,error:appsError}=await db
+    .from("applications")
+    .select("id")
+    .eq("user_id",user.id);
+
+  if(appsError){
+    console.error("Stats applications:",appsError);
+    setText("sms","0");
+    setText("delivered","0 delivered");
+    setText("otp","0");
+    setText("verified","0 verified");
+    return;
+  }
+
+  const ids=(apps||[]).map(x=>x.id);
+
+  if(!ids.length){
+    setText("sms","0");
+    setText("delivered","0 delivered");
+    setText("otp","0");
+    setText("verified","0 verified");
+    return;
+  }
+
+  const [smsResult,otpResult]=await Promise.all([
+    db.from("sms_logs")
+      .select("id,status")
+      .in("application_id",ids),
+    db.from("otp_logs")
+      .select("id,status")
+      .in("application_id",ids)
+  ]);
+
+  if(smsResult.error){
+    console.error("SMS stats:",smsResult.error);
+    setText("sms","0");
+    setText("delivered","0 delivered");
+  }else{
+    const sms=smsResult.data||[];
+    const delivered=sms.filter(x=>["delivered","success","sent"].includes(x.status)).length;
+    setText("sms",sms.length);
+    setText("delivered",delivered+" delivered");
+  }
+
+  if(otpResult.error){
+    console.error("OTP stats:",otpResult.error);
+    setText("otp","0");
+    setText("verified","0 verified");
+  }else{
+    const otp=otpResult.data||[];
+    const verified=otp.filter(x=>x.status==="verified").length;
+    setText("otp",otp.length);
+    setText("verified",verified+" verified");
+  }
 }
-document.getElementById("logout").onclick=async()=>{await db.auth.signOut();window.location.href="auth.html"};
+
+document.getElementById("logout").onclick=async()=>{
+  await db.auth.signOut();
+  window.location.href="auth.html";
+};
+
 start();
 </script>
 </body>
