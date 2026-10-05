@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Modem Technologies — Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="theme.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020511;--surface:#08112d;--surface2:#0d1737;--border:#1b2a5c;--text:#fff;--muted:#8e98ba;--primary:#315dff;--secondary:#783dff;--success:#20c997;--warning:#ffd65a;--danger:#ff687d}
+*{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}.app{max-width:430px;min-height:100vh;margin:auto;padding-bottom:80px}.header{height:72px;padding:12px 16px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}.brand{display:flex;align-items:center;gap:10px}.logo{width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,var(--primary),var(--secondary));display:grid;place-items:center;font-size:22px;font-weight:800;font-style:italic}.brand b{display:block;font-size:15px}.brand small{display:block;color:var(--muted);font-size:9px;margin-top:3px}.head-actions{display:flex;gap:7px}.icon{width:38px;height:38px;border:1px solid var(--border);border-radius:11px;background:var(--surface2);color:var(--text);font-size:16px}.content{padding:18px}.welcome h1{font-size:23px;margin-bottom:6px}.welcome p{font-size:10px;color:var(--muted);line-height:1.5;margin-bottom:16px}.status{display:flex;align-items:center;gap:8px;padding:12px;border:1px solid rgba(32,201,151,.2);background:rgba(32,201,151,.07);border-radius:13px;color:#67dfbf;font-size:9px;margin-bottom:15px}.dot{width:8px;height:8px;border-radius:50%;background:var(--success);box-shadow:0 0 9px var(--success)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px}.stat,.panel{background:var(--surface);border:1px solid var(--border);border-radius:16px}.stat{padding:14px}.stat i{color:#7693ff;font-style:normal;font-size:15px}.label{font-size:9px;color:var(--muted);margin-top:9px}.value{font-size:21px;font-weight:800;margin-top:3px}.sub{font-size:8px;color:var(--muted);margin-top:4px}.panel{overflow:hidden;margin-bottom:15px}.panelhead{padding:15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between}.panelhead b{font-size:12px}.panelhead span{font-size:9px;color:var(--muted)}.row{display:flex;align-items:center;gap:10px;padding:13px 15px;border-bottom:1px solid var(--border)}.row:last-child{border-bottom:0}.rowicon{width:37px;height:37px;border-radius:11px;background:rgba(49,93,255,.12);color:#7693ff;display:grid;place-items:center;flex-shrink:0;font-weight:800}.rowmain{flex:1;min-width:0}.rowtitle{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rowsub{font-size:8px;color:var(--muted);margin-top:4px}.badge{font-size:7px;font-weight:800;padding:4px 7px;border-radius:99px;text-transform:uppercase}.pending{background:rgba(255,214,90,.12);color:var(--warning)}.active{background:rgba(32,201,151,.12);color:var(--success)}.declined{background:rgba(255,104,125,.12);color:var(--danger)}.empty{padding:27px 15px;text-align:center;color:var(--muted);font-size:10px}.quick{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:13px}.quick button{border:1px solid var(--border);background:var(--surface2);color:var(--text);border-radius:13px;padding:14px 7px}.quick i{display:block;color:#7693ff;font-size:18px;font-style:normal;margin-bottom:7px}.quick span{font-size:9px;font-weight:700}.bottom-nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:430px;background:var(--surface);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding:8px 5px calc(8px + env(safe-area-inset-bottom));z-index:100}.nav-item{text-decoration:none;color:var(--muted);text-align:center;font-size:8px;font-weight:700;padding:6px 2px}.nav-icon{display:block;font-size:17px;margin-bottom:4px}.nav-item.active{color:#8c7aff}html[data-theme=light]{--bg:#f4f6fb;--surface:#fff;--surface2:#eef2fa;--border:#dfe4ef;--text:#101522;--muted:#667085}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header"><div class="brand"><div class="logo">M</div><div><b>Modem Technologies</b><small>User Dashboard</small></div></div><div class="head-actions"><button class="icon" data-theme-toggle>☀</button><button class="icon" id="logout">↪</button></div></header>
+<main class="content">
+<div class="welcome"><h1 id="welcome">Dashboard</h1><p>Manage your applications, API access, SMS, OTP and account.</p></div>
+<div class="status"><span class="dot"></span><b>Modem services operational</b><span>API & OTP available</span></div>
+<div class="grid">
+<div class="stat"><i>▦</i><div class="label">Applications</div><div class="value" id="apps">—</div><div class="sub" id="activeApps">— active</div></div>
+<div class="stat"><i>◆</i><div class="label">API Keys</div><div class="value" id="keys">—</div><div class="sub">active keys</div></div>
+<div class="stat"><i>SMS</i><div class="label">SMS Requests</div><div class="value" id="sms">—</div><div class="sub" id="delivered">— delivered</div></div>
+<div class="stat"><i>OTP</i><div class="label">OTP Requests</div><div class="value" id="otp">—</div><div class="sub" id="verified">— verified</div></div>
+</div>
+<section class="panel"><div class="panelhead"><b>My Applications</b><span>Latest</span></div><div id="applications"><div class="empty">Loading applications...</div></div></section>
+<section class="panel"><div class="panelhead"><b>Wallet</b><span>Account balance</span></div><div class="row"><div class="rowicon">$</div><div class="rowmain"><div class="rowtitle" id="balance">—</div><div class="rowsub" id="credits">Loading...</div></div></div></section>
+<section class="panel"><div class="panelhead"><b>Quick Actions</b></div><div class="quick">
+<button onclick="openPage('applications.html')"><i>＋</i><span>Applications</span></button>
+<button onclick="openPage('api.html')"><i>◆</i><span>API Keys</span></button>
+<button onclick="openPage('sms.html')"><i>➤</i><span>SMS</span></button>
+<button onclick="openPage('otp.html')"><i>▣</i><span>OTP</span></button>
+</div></section>
+<section class="panel"><div class="panelhead"><b>Recent API Activity</b><span>Latest 5</span></div><div id="activity"><div class="empty">Loading activity...</div></div></section>
+</main>
+<nav class="bottom-nav">
+<a class="nav-item active" href="dashboard.html"><span class="nav-icon">⌂</span>Dashboard</a>
+<a class="nav-item" href="applications.html"><span class="nav-icon">▦</span>Applications</a>
+<a class="nav-item" href="api.html"><span class="nav-icon">&lt;/&gt;</span>API</a>
+<a class="nav-item" href="sms.html"><span class="nav-icon">▣</span>SMS</a>
+<a class="nav-item" href="settings.html"><span class="nav-icon">⚙</span>Settings</a>
+</nav>
+</div>
+<script>
+const URL="https://qrwekafcblukxnoficeo.supabase.co";
+const KEY="sb_publishable_WwmKxupdfvpF9DV9baOCLQ_jeII1j66";
+const db=supabase.createClient(URL,KEY);
+let user=null;
+
+const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+function openPage(p){window.location.href=p}
+function setText(id,value){const el=document.getElementById(id);if(el)el.textContent=value}
+function setError(id,message){const el=document.getElementById(id);if(el)el.innerHTML='<div class="empty">'+esc(message)+'</div>'}
+
+async function start(){
+  const {data:{session},error:sessionError}=await db.auth.getSession();
+  if(sessionError){console.error("Session error:",sessionError);window.location.href="auth.html";return}
+  if(!session){window.location.href="auth.html";return}
+  user=session.user;
+  setText("welcome","Welcome back, "+((user.email||"User").split("@")[0]));
+  await Promise.allSettled([loadApplications(),loadWallet(),loadApiActivity(),loadApiKeys(),loadStats()]);
+}
+
+async function loadApplications(){
+  const {data,error}=await db.from("applications").select("id,name,sender_name,service,status,created_at").eq("user_id",user.id).order("created_at",{ascending:false}).limit(5);
+  if(error){console.error("Applications:",error);setError("applications","Could not load applications.");return}
+  const apps=data||[];
+  setText("apps",apps.length);
+  setText("activeApps",apps.filter(x=>x.status==="active").length+" active");
+  if(!apps.length){setError("applications","No applications yet.");return}
+  document.getElementById("applications").innerHTML=apps.map(x=>{
+    const s=x.status||"pending";
+    const cls=["pending","active","declined"].includes(s)?s:"pending";
+    const label=s==="active"?"Approved":s==="declined"?"Declined":s==="pending"?"Pending":s.charAt(0).toUpperCase()+s.slice(1);
+    return `<div class="row"><div class="rowicon">${esc((x.name||"A")[0].toUpperCase())}</div><div class="rowmain"><div class="rowtitle">${esc(x.name||"Application")}</div><div class="rowsub">Sender: ${esc(x.sender_name||"—")} · ${esc(x.service||"—")}</div></div><span class="badge ${cls}">${label}</span></div>`;
+  }).join("");
+}
+
+async function loadWallet(){
+  const {data,error}=await db.from("wallets").select("balance,currency,sms_credits").eq("user_id",user.id).maybeSingle();
+  if(error){console.error("Wallet:",error);setText("balance","NGN 0");setText("credits","0 SMS credits");return}
+  if(!data){setText("balance","NGN 0");setText("credits","0 SMS credits");return}
+  setText("balance",(data.currency||"NGN")+" "+Number(data.balance||0).toLocaleString());
+  setText("credits",Number(data.sms_credits||0).toLocaleString()+" SMS credits");
+}
+
+async function loadApiKeys(){
+  const {data,error}=await db.from("api_keys").select("id").eq("user_id",user.id).is("revoked_at",null);
+  if(error){console.error("API keys:",error);setText("keys","0");return}
+  setText("keys",(data||[]).length);
+}
+
+async function loadApiActivity(){
+  const {data,error}=await db.from("api_request_logs").select("id,endpoint,method,request_type,status,status_code,created_at").eq("user_id",user.id).order("created_at",{ascending:false}).limit(5);
+  if(error){console.error("API activity:",error);setError("activity","Could not load API activity.");return}
+  if(!data||!data.length){setError("activity","No API activity yet.");return}
+  document.getElementById("activity").innerHTML=data.map(x=>{
+    const ok=x.status==="success"||Number(x.status_code)>=200&&Number(x.status_code)<300;
+    return `<div class="row"><div class="rowicon">↗</div><div class="rowmain"><div class="rowtitle">${esc(x.endpoint||"API Request")}</div><div class="rowsub">${esc(x.method||"")} · ${esc(x.request_type||"")}</div></div><span class="badge ${ok?"active":"declined"}">${esc(x.status||x.status_code||"—")}</span></div>`;
+  }).join("");
+}
+
+async function loadStats(){
+  const {data:apps,error:appsError}=await db.from("applications").select("id").eq("user_id",user.id);
+  if(appsError){console.error("Stats applications:",appsError);setText("sms","0");setText("delivered","0 delivered");setText("otp","0");setText("verified","0 verified");return}
+  const ids=(apps||[]).map(x=>x.id);
+  if(!ids.length){setText("sms","0");setText("delivered","0 delivered");setText("otp","0");setText("verified","0 verified");return}
+  const [smsResult,otpResult]=await Promise.all([
+    db.from("sms_logs").select("id,status").in("application_id",ids),
+    db.from("otp_logs").select("id,status").in("application_id",ids)
+  ]);
+  if(smsResult.error){console.error("SMS stats:",smsResult.error);setText("sms","0");setText("delivered","0 delivered")}
+  else{const sms=smsResult.data||[];const delivered=sms.filter(x=>["delivered","success","sent"].includes(x.status)).length;setText("sms",sms.length);setText("delivered",delivered+" delivered")}
+  if(otpResult.error){console.error("OTP stats:",otpResult.error);setText("otp","0");setText("verified","0 verified")}
+  else{const otp=otpResult.data||[];const verified=otp.filter(x=>x.status==="verified").length;setText("otp",otp.length);setText("verified",verified+" verified")}
+}
+
+document.getElementById("logout").onclick=async()=>{await db.auth.signOut();window.location.href="auth.html"};
+start();
+</script>
+</body>
+</html>
